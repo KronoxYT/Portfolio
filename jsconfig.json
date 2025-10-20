@@ -1,7 +1,23 @@
 {
+  // ============================================
+  // CONFIGURACIÓN DE JAVASCRIPT/TYPESCRIPT
+  // ============================================
+  // Permite usar imports con alias @ en lugar de rutas relativas
+  // Ejemplo: import Button from "@/components/Button"
+  // En lugar de: import Button from "../../components/Button"
+  
   "compilerOptions": {
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"]  // @ apunta a la raíz del proyecto
     }
+    
+    // OPCIONES ADICIONALES (descomenta si necesitas):
+    // "baseUrl": ".",
+    // "target": "ES2020",
+    // "module": "ESNext",
+    // "jsx": "preserve"
   }
+  
+  // Excluir carpetas de análisis
+  // "exclude": ["node_modules", ".next"]
 }

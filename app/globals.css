@@ -1,42 +1,364 @@
+/* ============================================
+   HACKER THEME - Cyberpunk Style
+   ============================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Background Colors */
+  --bg-primary: #0a0e14;
+  --bg-secondary: #0d1117;
+  --bg-tertiary: #161b22;
+  
+  /* Neon Colors */
+  --neon-green: #00ff41;
+  --neon-cyan: #00ffff;
+  --neon-purple: #bf00ff;
+  --neon-pink: #ff006e;
+  --neon-blue: #0080ff;
+  
+  /* Text Colors */
+  --text-primary: #e6e6e6;
+  --text-secondary: #a0a0a0;
+  --text-dim: #6b6b6b;
+  --text-glow: #00ff41;
+  
+  /* Border & Effects */
+  --border-color: #00ff4133;
+  --shadow-glow: 0 0 10px var(--neon-green);
+  --shadow-cyan: 0 0 15px var(--neon-cyan);
+  
+  /* Terminal Colors */
+  --terminal-green: #00ff41;
+  --terminal-prompt: #00ff41;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ============================================
+   ESTILOS BASE - HTML & BODY
+   ============================================ */
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Evita scroll horizontal no deseado */
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  font-family: 'Courier New', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow-x: hidden;
 }
 
+/* Scanline Effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 255, 65, 0.03) 0px,
+    transparent 1px,
+    transparent 2px,
+    rgba(0, 255, 65, 0.03) 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Vignette Effect */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ============================================
+   RESET CSS - Elimina estilos por defecto
+   ============================================ */
 * {
-  box-sizing: border-box;
+  box-sizing: border-box; /* Hace que padding/border se incluyan en width/height */
   padding: 0;
   margin: 0;
 }
 
 a {
-  color: inherit;
+  color: var(--neon-cyan);
   text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+a:hover {
+  color: var(--neon-green);
+  text-shadow: var(--shadow-glow);
+}
+
+/* ============================================
+   HACKER UTILITIES
+   ============================================ */
+
+/* Glitch Text Effect */
+.glitch {
+  position: relative;
+  animation: glitch-skew 3s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--neon-cyan);
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--neon-pink);
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+/* Terminal Text */
+.terminal-text {
+  color: var(--terminal-green);
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 5px var(--neon-green);
+}
+
+/* Neon Button */
+.neon-button {
+  background: transparent;
+  border: 2px solid var(--neon-green);
+  color: var(--neon-green);
+  padding: 12px 30px;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.neon-button:hover {
+  background: var(--neon-green);
+  color: var(--bg-primary);
+  box-shadow: 0 0 20px var(--neon-green),
+              0 0 40px var(--neon-green),
+              inset 0 0 10px var(--neon-green);
+  text-shadow: none;
+}
+
+.neon-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+  transition: left 0.5s;
+}
+
+.neon-button:hover::before {
+  left: 100%;
+}
+
+/* Card Hacker Style */
+.hacker-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.hacker-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--neon-green), var(--neon-cyan), var(--neon-purple));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hacker-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 255, 65, 0.3);
+}
+
+.hacker-card:hover::before {
+  opacity: 0.3;
+}
+
+/* Typing Animation */
+.typing-effect {
+  overflow: hidden;
+  border-right: 3px solid var(--neon-green);
+  white-space: nowrap;
+  animation: typing 3s steps(40) 1s 1 normal both,
+             blink 0.7s infinite;
+}
+
+/* Neon Glow Text */
+.neon-text {
+  color: var(--neon-green);
+  text-shadow: 0 0 5px var(--neon-green),
+               0 0 10px var(--neon-green),
+               0 0 20px var(--neon-green),
+               0 0 40px var(--neon-green);
+  animation: flicker 2s infinite alternate;
+}
+
+/* Cyber Border */
+.cyber-border {
+  position: relative;
+  border: 2px solid var(--neon-green);
+  clip-path: polygon(
+    0 10px, 10px 0, calc(100% - 10px) 0, 100% 10px,
+    100% calc(100% - 10px), calc(100% - 10px) 100%,
+    10px 100%, 0 calc(100% - 10px)
+  );
+}
+
+/* Scanline on Hover */
+.scanline-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline-hover::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan);
+  animation: scan 3s linear infinite;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes glitch-skew {
+  0%, 100% { transform: skew(0deg); }
+  20% { transform: skew(2deg); }
+  40% { transform: skew(-2deg); }
+  60% { transform: skew(1deg); }
+  80% { transform: skew(-1deg); }
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(random(100) + px, 9999px, random(100) + px, 0); }
+  5% { clip: rect(random(100) + px, 9999px, random(100) + px, 0); }
+  10% { clip: rect(random(100) + px, 9999px, random(100) + px, 0); }
+  15% { clip: rect(random(100) + px, 9999px, random(100) + px, 0); }
+  20% { clip: rect(random(100) + px, 9999px, random(100) + px, 0); }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    text-shadow: 0 0 5px var(--neon-green),
+                 0 0 10px var(--neon-green),
+                 0 0 20px var(--neon-green),
+                 0 0 40px var(--neon-green);
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+@keyframes scan {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   SCROLLBAR HACKER STYLE
+   ============================================ */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neon-green);
+  box-shadow: 0 0 10px var(--neon-green);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 20px var(--neon-cyan);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
+  .neon-button {
+    padding: 10px 20px;
+    font-size: 12px;
   }
 }
